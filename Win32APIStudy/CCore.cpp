@@ -6,10 +6,6 @@
 #include "CSceneMgr.h"
 //CCore* CCore::g_pInst = nullptr;
 
-
-CObject g_obj;
-
-
 CCore::CCore()
 	: m_hWnd(0)
 	, m_ptResolution{}
@@ -57,11 +53,6 @@ int CCore::init(HWND _hWnd, POINT _ptResolution)
 	CSceneMgr::GetInst()->init();
 
 
-
-	Vec2 vPos = Vec2((float)(m_ptResolution.x / 2), (float)(m_ptResolution.y / 2));
-	g_obj.SetPos(vPos);
-	g_obj.SetScale(Vec2(100, 100));
-
 	return S_OK;
 }
 
@@ -92,41 +83,6 @@ void CCore::progress()
 	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
 
 	CSceneMgr::GetInst()->render(m_memDC);
-
-	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_memDC, 0, 0, SRCCOPY);
-}
-
-void CCore::update()
-{
-	Vec2 vPos = g_obj.GetPos();
-
-	//시간 동기화가 필요 > 성능에 따라 이동속도가 달라지는 문제 해결
-	if (CKeyMgr::GetInst()->GetKeyState(KEY::LEFT) == KEY_STATE::HOLD)
-	{
-		vPos.x -= 200.f * fDT;
-	}
-	if (CKeyMgr::GetInst()->GetKeyState(KEY::RIGHT) == KEY_STATE::HOLD)
-	{
-		vPos.x += 200.f * fDT;
-	}
-
-	g_obj.SetPos(vPos);
-}
-
-void CCore::render()
-{
-	//화면 clear
-	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y+1);
-
-	//그리기
-	Vec2 vPos = g_obj.GetPos();
-	Vec2 vScale = g_obj.GetScale();
-
-	Rectangle(m_memDC, int(vPos.x - vScale.x / 2.f)
-		, int(vPos.y - vScale.y / 2.f)
-		, int(vPos.x + vScale.x / 2.f)
-		, int(vPos.y + vScale.y / 2.f)
-	);
 
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_memDC, 0, 0, SRCCOPY);
 }

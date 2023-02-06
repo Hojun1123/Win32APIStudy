@@ -19,7 +19,6 @@ public:
 	virtual void Enter() = 0;
 	virtual void Exit() = 0;
 
-protected:
 	void AddObject(CObject* _pObj, GROUP_TYPE _eType) { m_arrObj[(UINT)_eType].push_back(_pObj); }
 
 public:
