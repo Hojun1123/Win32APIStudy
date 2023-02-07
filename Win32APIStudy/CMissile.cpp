@@ -3,8 +3,10 @@
 #include "CTimeMgr.h"
 
 CMissile::CMissile()
-	:m_fDir(1.f)
-{	
+	:m_fTheta(PI / 2.f)
+	,m_vDir(Vec2(1.f, 1.f))
+{
+	m_vDir.Normalize();
 }
 
 CMissile::~CMissile()
@@ -14,7 +16,12 @@ CMissile::~CMissile()
 void CMissile::update()
 {
 	Vec2 vPos = GetPos();
-	vPos.y += 600.f * fDT*(float)m_fDir;
+	//vPos.x += 600.f * cosf(m_fTheta) * fDT;
+	//vPos.y -= 600.f * sinf(m_fTheta) * fDT;
+
+	vPos.x += 600.f * m_vDir.x * fDT;
+	vPos.y += 600.f * m_vDir.y * fDT;
+
 	SetPos(vPos);
 }
 

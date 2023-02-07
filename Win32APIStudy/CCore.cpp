@@ -4,6 +4,9 @@
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
 #include "CSceneMgr.h"
+#include "CPathMgr.h"
+#include "CTexture.h"
+
 //CCore* CCore::g_pInst = nullptr;
 
 CCore::CCore()
@@ -51,6 +54,7 @@ int CCore::init(HWND _hWnd, POINT _ptResolution)
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();
 	CSceneMgr::GetInst()->init();
+	CPathMgr::GetInst()->init();
 
 
 	return S_OK;
@@ -76,7 +80,7 @@ void CCore::progress()
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
 	CSceneMgr::GetInst()->update();
-	
+
 
 	//랜더링~ ~~~~~~~~~~~//////////////////////////////
 	//화면 clear
@@ -85,4 +89,6 @@ void CCore::progress()
 	CSceneMgr::GetInst()->render(m_memDC);
 
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_memDC, 0, 0, SRCCOPY);
+	
+	//CTimeMgr::GetInst()->render();
 }

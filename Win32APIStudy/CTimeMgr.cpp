@@ -37,7 +37,10 @@ void CTimeMgr::update()
 	m_dDT = (double)(m_llCurCount.QuadPart - m_llPrevCount.QuadPart) / (double)m_llFrequency.QuadPart;
 	//다음 갱신을 위한 프레임값 갱신
 	m_llPrevCount = m_llCurCount;
+}
 
+void CTimeMgr::render()
+{
 	++m_iCallCount;
 	m_dAcc += m_dDT;
 
