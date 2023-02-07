@@ -1,3 +1,4 @@
+#pragma comment(lib, "msimg32.lib")
 
 #include "pch.h"
 #include "CPlayer.h"
@@ -9,12 +10,15 @@
 #include "CTexture.h"
 #include "CPathMgr.h"
 #include "CResMgr.h"
+#include "CCollider.h"
 
 CPlayer::CPlayer()
 	: m_pTex(nullptr)
 {
 	//텍스쳐 로딩
-	m_pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"content\\texture\\player_image.bmp");
+	m_pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"content\\texture\\rusid.bmp");
+	CreateCollider();
+	GetCollider()->SetScale(Vec2(66.f, 81.f));
 
 }
 
@@ -61,9 +65,22 @@ void CPlayer::render(HDC _dc)
 	int iWidth = (int)m_pTex->Width();
 	int iHeight = (int)m_pTex->Height();
 	Vec2 vPos = GetPos();
+
+	/*
 	BitBlt(_dc, int(vPos.x - (float)(iWidth / 2))
 		, int(vPos.y - (float)(iHeight / 2))
 		, iWidth, iHeight
 		, m_pTex->GetDC()
 		, 0, 0, SRCCOPY);
+		*/
+
+	TransparentBlt(_dc
+		, int(vPos.x - (float)(iWidth / 2))
+		, int(vPos.y - (float)(iHeight / 2))
+		, iWidth, iHeight, m_pTex->GetDC()
+		, 0, 0, iWidth, iHeight, RGB(255, 0, 255));
+
+
+	//충돌체가 있는 경우 렌더링
+	component_render(_dc);
 }

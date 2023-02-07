@@ -31,6 +31,18 @@ void CScene::update()
 	}
 }
 
+void CScene::finalupdate()
+{
+	for (int i = 0; i < (int)GROUP_TYPE::END; ++i)
+	{
+		for (int j = 0; j < m_arrObj[i].size(); ++j)
+		{
+			m_arrObj[i][j]->finalupdate();
+		}
+	}
+}
+
+
 void CScene::render(HDC _dc)
 {
 	for (int i = 0; i < (int)GROUP_TYPE::END; ++i)

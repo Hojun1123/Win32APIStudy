@@ -25,6 +25,25 @@ public:
 	}
 
 public:
+	Vec2 operator + (Vec2 _vOthrer)
+	{
+		return Vec2(x + _vOthrer.x , y + _vOthrer.y);
+	}
+	Vec2 operator - (Vec2 _vOthrer)
+	{
+		return Vec2(x - _vOthrer.x, y - _vOthrer.y);
+	}
+	Vec2 operator * (Vec2 _vOthrer)
+	{
+		return Vec2(x * _vOthrer.x, y * _vOthrer.y);
+	}
+	Vec2 operator / (Vec2 _vOthrer)
+	{
+		assert(!(0.f == _vOthrer.x || 0.f == _vOthrer.y));
+		return Vec2(x / _vOthrer.x, y / _vOthrer.y);
+	}
+
+public:
 	Vec2()
 		: x(0.f)
 		, y(0.f)

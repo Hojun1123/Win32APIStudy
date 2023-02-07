@@ -33,6 +33,19 @@ enum class SCENE_TYPE
 	END,
 };
 
+enum class BRUSH_TYPE
+{
+	HOLLOW,
+	END,
+};
+
+enum class PEN_TYPE
+{
+	RED,
+	GREEN,
+	BLUE,
+	END,
+};
 
 
 /* 자주 쓰는 것들 정의 */

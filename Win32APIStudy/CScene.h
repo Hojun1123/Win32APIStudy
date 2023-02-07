@@ -13,6 +13,7 @@ public:
 	const wstring& GetName(){ return m_strName; }
 
 	void update();
+	void finalupdate();
 	void render(HDC _dc);
 
 	//순수 가상 함수
