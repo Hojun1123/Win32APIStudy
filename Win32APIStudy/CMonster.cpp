@@ -2,6 +2,7 @@
 #include "CMonster.h"
 
 #include "CTimeMgr.h"
+#include "CCollider.h"
 
 void CMonster::update()
 {
@@ -25,6 +26,8 @@ CMonster::CMonster()
 	, m_iDir(1)
 {
 	CreateCollider();
+	GetCollider()->SetOffsetPos(Vec2(0.f, 0.f));
+	GetCollider()->SetScale(Vec2(45.f, 45.f));
 }
 
 CMonster::~CMonster()

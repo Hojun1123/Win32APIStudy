@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "CCore.h"
 #include "CObject.h"
+#include "CTexture.h"
+
+#include "CSceneMgr.h"
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
-#include "CSceneMgr.h"
 #include "CPathMgr.h"
-#include "CTexture.h"
+#include "CCollisionMgr.h"
+
 
 //CCore* CCore::g_pInst = nullptr;
 
@@ -87,7 +90,7 @@ void CCore::progress()
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
 	CSceneMgr::GetInst()->update();
-
+	CCollisionMgr::GetInst()->update();
 
 	//랜더링~ ~~~~~~~~~~~//////////////////////////////
 	//화면 clear

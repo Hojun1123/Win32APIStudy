@@ -18,7 +18,8 @@ CPlayer::CPlayer()
 	//텍스쳐 로딩
 	m_pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"content\\texture\\rusid.bmp");
 	CreateCollider();
-	GetCollider()->SetScale(Vec2(66.f, 81.f));
+	GetCollider()->SetOffsetPos(Vec2(-2, 10));
+	GetCollider()->SetScale(Vec2(30.f, 60.f));
 
 }
 
