@@ -37,6 +37,7 @@ void CScene_Start::Enter()
 		pMonsterObj = new CMonster();
 		pMonsterObj->SetPos(Vec2((fMoveDist + fObjectScale / 2.f) + (float)fTerm * i, 50.f));
 		pMonsterObj->SetCenterPos(pMonsterObj->GetPos());
+
 		pMonsterObj->SetMoveDistance(fMoveDist);
 		pMonsterObj->SetScale(Vec2(fObjectScale, fObjectScale));
 		AddObject(pMonsterObj, GROUP_TYPE::MOSTER);
@@ -44,6 +45,7 @@ void CScene_Start::Enter()
 	
 	//이번 씬에서의 충돌지정 : 플레이어그룹과 몬스터 그룹간의 충돌체크.
 	CCollisionMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MOSTER);
+	CCollisionMgr::GetInst()->CheckGroup(GROUP_TYPE::MOSTER, GROUP_TYPE::PROJ_PLAYER);
 }
 
 void CScene_Start::Exit()

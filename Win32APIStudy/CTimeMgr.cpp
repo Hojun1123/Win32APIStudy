@@ -37,6 +37,13 @@ void CTimeMgr::update()
 	m_dDT = (double)(m_llCurCount.QuadPart - m_llPrevCount.QuadPart) / (double)m_llFrequency.QuadPart;
 	//다음 갱신을 위한 프레임값 갱신
 	m_llPrevCount = m_llCurCount;
+
+#ifdef _DEBUG
+	if (m_dDT > (1.f / 60.f))
+		m_dDT = (1.f / 60.f);
+		
+#endif // _DEBUG
+
 }
 
 void CTimeMgr::render()

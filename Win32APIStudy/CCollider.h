@@ -15,6 +15,7 @@ private:
 	UINT m_iID;
 	UINT m_iCol;
 
+
 public:
 	void finalupdate();
 	void render(HDC _dc);
@@ -31,17 +32,18 @@ public:
 
 	Vec2 GetOffsetPos() { return m_vOffsetPos; }
 	Vec2 GetScale() { return m_vScale; }
-
 	Vec2 GetFinalPos() { return m_vFinalPos; }
+
+	CObject* GetObj() { return m_pOwner; }
 
 	UINT GetID(){ return m_iID; }
 
 	friend class CObject;
 
 public:
-	void OnCollision(CCollider* _pOther);	//충돌 중인 경우
-	void OnCollisionEnter(CCollider* _pOther);	//충돌 시작
-	void OnCollisionExit(CCollider* _pOther);	//충돌 종료
+	virtual void OnCollision(CCollider* _pOther);	//충돌 중인 경우
+	virtual void OnCollisionEnter(CCollider* _pOther);	//충돌 시작
+	virtual void OnCollisionExit(CCollider* _pOther);	//충돌 종료
 
 };
 

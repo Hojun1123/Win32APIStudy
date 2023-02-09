@@ -30,17 +30,19 @@ CCollider::CCollider(const CCollider& _origin)
 
 void CCollider::OnCollision(CCollider* _pOther)
 {
-
+	m_pOwner->OnCollision(_pOther);
 }
 
 void CCollider::OnCollisionEnter(CCollider* _pOther)
 {
-	m_iCol = true;
+	++m_iCol;
+	m_pOwner->OnCollisionEnter(_pOther);
 }
 
 void CCollider::OnCollisionExit(CCollider* _pOther)
 {
-	m_iCol = false;
+	--m_iCol;
+	m_pOwner->OnCollisionExit(_pOther);
 }
 
 
@@ -49,6 +51,8 @@ void CCollider::finalupdate()
 	//오브젝트(Owner)의 위치를 따라감
 	Vec2 vObjectPos = m_pOwner->GetPos();
 	m_vFinalPos = vObjectPos + m_vOffsetPos;
+	
+	assert(0 <= m_iCol);
 }
 
 void CCollider::render(HDC _dc)

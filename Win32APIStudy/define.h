@@ -17,8 +17,9 @@ enum class GROUP_TYPE
 
 	DEFUALT,		//0
 	PLAYER,			//1
-	MISSILE,		//2
-	MOSTER,			//3
+	MOSTER,			//2
+	PROJ_PLAYER,	//3
+	PROJ_MOSTER,	//4
 
 	END = 32,
 };
@@ -44,6 +45,14 @@ enum class PEN_TYPE
 	RED,
 	GREEN,
 	BLUE,
+	END,
+};
+
+enum class EVENT_TYPE
+{
+	CREATE_OBJECT,
+	DELETE_OBJECT,
+	SCENE_CHANGE,
 	END,
 };
 

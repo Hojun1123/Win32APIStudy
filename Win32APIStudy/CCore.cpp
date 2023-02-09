@@ -8,7 +8,7 @@
 #include "CKeyMgr.h"
 #include "CPathMgr.h"
 #include "CCollisionMgr.h"
-
+#include "CEventMgr.h"
 
 //CCore* CCore::g_pInst = nullptr;
 
@@ -86,21 +86,26 @@ void CCore::progress()
 	//	callcount = 0;
 	//}
 
-
+	//Manager update
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
+
+	//Scene update
 	CSceneMgr::GetInst()->update();
+	//충돌체크
 	CCollisionMgr::GetInst()->update();
 
 	//랜더링~ ~~~~~~~~~~~//////////////////////////////
 	//화면 clear
 	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
-
 	CSceneMgr::GetInst()->render(m_memDC);
-
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_memDC, 0, 0, SRCCOPY);
 	
+	//Fps, 프레임 갱신
 	CTimeMgr::GetInst()->render();
+
+	//이벤트 지연처리
+	CEventMgr::GetInst()->update();
 }
 
 //자주 사용 할 펜 브러쉬 생성

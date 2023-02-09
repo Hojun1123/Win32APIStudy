@@ -3,6 +3,7 @@
 
 #include "CTimeMgr.h"
 #include "CCollider.h"
+#include "CEventMgr.h"
 
 void CMonster::update()
 {
@@ -19,6 +20,16 @@ void CMonster::update()
 	SetPos(vCurPos);
 }
 
+void CMonster::OnCollisionEnter(CCollider* _pOther)
+{
+	CObject* pOtherObj =  _pOther->GetObj();
+	if (pOtherObj->GetName() == L"Missile_Player")
+	{
+
+		DeleteObject(this);
+	}
+}
+
 CMonster::CMonster()
 	: m_vCenterPos(Vec2(0.f, 0.f))
 	, m_fSpeed(100.f)
@@ -26,7 +37,6 @@ CMonster::CMonster()
 	, m_iDir(1)
 {
 	CreateCollider();
-	GetCollider()->SetOffsetPos(Vec2(0.f, 0.f));
 	GetCollider()->SetScale(Vec2(45.f, 45.f));
 }
 

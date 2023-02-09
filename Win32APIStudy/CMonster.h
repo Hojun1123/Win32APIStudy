@@ -1,5 +1,5 @@
 #pragma once
-#include "CObject.h"
+#include "CObject.h"  
 
 class CMonster:public CObject
 {
@@ -11,6 +11,7 @@ private:
 
 public:
 	virtual void update();
+	virtual void OnCollisionEnter(CCollider* _pOther);
 
 public:
 	float GetSpeed() { return m_fSpeed; }
