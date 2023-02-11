@@ -9,6 +9,7 @@ public:
 	//명시적으로 virtual를 붙여줌.
 	virtual void Enter();
 	virtual void Exit();
+	virtual void update();
 
 public:
 	CScene_Start();

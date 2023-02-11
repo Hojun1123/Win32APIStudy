@@ -5,7 +5,7 @@
 
 CMissile::CMissile()
 	:m_fTheta(PI / 4.f)
-	,m_vDir(Vec2(1.f, 1.f))
+	, m_vDir(Vec2(1.f, 1.f))
 {
 	m_vDir.Normalize();
 	CreateCollider();
@@ -37,3 +37,13 @@ void CMissile::render(HDC _dc)
 
 	component_render(_dc);
 }
+
+void CMissile::OnCollisionEnter(CCollider* _pOther)
+{
+	CObject* pOtherObj = _pOther->GetObj();
+	if (pOtherObj->GetName() == L"Monster")
+	{
+		DeleteObject(this);
+	}
+}
+

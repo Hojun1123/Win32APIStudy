@@ -1,6 +1,7 @@
 #pragma once
 #include "CObject.h"
-#include "CTexture.h"
+
+class CTexture;
 
 class CPlayer
 	:public CObject
@@ -11,13 +12,17 @@ private:
 public:
 	CPlayer();
 	~CPlayer();
+	CPlayer(const CPlayer& _origin) 
+		:CObject(_origin)
+		, m_pTex(_origin.m_pTex)
+	{}
 
 public:	
 	virtual void update();
 	virtual void render(HDC _dc);
 
-
 private:
 	void CreateMissile();
+	CLONE(CPlayer);
 };
 

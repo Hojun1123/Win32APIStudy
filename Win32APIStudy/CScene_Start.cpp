@@ -4,8 +4,11 @@
 #include "CMonster.h"
 #include "CCore.h"
 #include "CTexture.h"
+
 #include "CPathMgr.h"
 #include "CCollisionMgr.h"
+#include "CKeyMgr.h"
+#include "CSceneMgr.h"
 
 CScene_Start::CScene_Start()
 {
@@ -15,6 +18,16 @@ CScene_Start::~CScene_Start()
 {
 
 }
+void CScene_Start::update()
+{
+	CScene::update();
+	//+추가적인 할일
+	if (KEY_TAP(KEY::ENTER))
+	{
+		ChangeScene(SCENE_TYPE::TOOL);
+	}
+}
+
 void CScene_Start::Enter()
 {
 	//오브젝트 추가
@@ -22,6 +35,10 @@ void CScene_Start::Enter()
 	pObj->SetPos(Vec2(640.f, 384.f));
 	pObj->SetScale(Vec2(100.f, 100.f));
 	AddObject(pObj, GROUP_TYPE::PLAYER);
+
+	CObject* pOtherPlayer = pObj->Clone();
+	pObj->SetPos(Vec2(700.f, 384.f));
+	AddObject(pOtherPlayer, GROUP_TYPE::PLAYER);
 
 	int iMonsterCount = 10;
 	float fMoveDist = 25.f;
@@ -35,6 +52,7 @@ void CScene_Start::Enter()
 	{
 		//몬스터 추가
 		pMonsterObj = new CMonster();
+		pMonsterObj->SetName(L"Monster");
 		pMonsterObj->SetPos(Vec2((fMoveDist + fObjectScale / 2.f) + (float)fTerm * i, 50.f));
 		pMonsterObj->SetCenterPos(pMonsterObj->GetPos());
 
@@ -50,5 +68,6 @@ void CScene_Start::Enter()
 
 void CScene_Start::Exit()
 {
+	DeleteAll();
 	CCollisionMgr::GetInst()->Reset();
 }

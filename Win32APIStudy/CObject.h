@@ -1,6 +1,7 @@
 #pragma once
 
 class CCollider;
+class CAnimator;
 
 class CObject
 {
@@ -10,9 +11,12 @@ private:
 	Vec2 m_vPos;
 	Vec2 m_vScale;
 
+	//ÄÄÆ÷³ÍÆ®
 	CCollider* m_pCollider;
+	CAnimator* m_pAnimator;
 
 	bool m_bAlive;
+
 	void SetDead() { m_bAlive = false; }
 public:
 	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
@@ -38,8 +42,12 @@ public:
 	virtual void OnCollisionExit(CCollider* _pOther) {};
 
 	friend class CEventMgr;
+
+	virtual CObject* Clone() = 0;
+
 public:
 	CObject();
+	CObject(const CObject& _origin);
 	virtual ~CObject();
 };
 

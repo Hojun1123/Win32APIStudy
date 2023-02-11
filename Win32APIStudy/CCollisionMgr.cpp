@@ -77,9 +77,7 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 
 			CCollider* pLeftCol = vecLeft[i]->GetCollider();
 			CCollider* pRightCol = vecRight[j]->GetCollider();
-			COLLIDER_ID ID;
-			ID.Left_id = pLeftCol->GetID();
-			ID.Right_id = pRightCol->GetID();
+			COLLIDER_ID ID = {pLeftCol->GetID(), pRightCol->GetID()};
 			iter = m_mapColInfo.find(ID.ID);
 
 			// 충돌 정보가 등록되어있지 않은 경우, 등록하고 false
@@ -94,16 +92,30 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 				//현재 충돌
 				if (iter->second)
 				{
-					//이전에 충돌이었음 > 계속 충돌 중
-					pLeftCol->OnCollision(pRightCol);
-					pRightCol->OnCollision(pLeftCol);
+					if (vecLeft[i]->IsDead() || vecRight[j]->IsDead())
+					{
+						//둘중하나가 삭제 예정이면 충돌 해제.
+						pLeftCol->OnCollisionExit(pRightCol);
+						pRightCol->OnCollisionExit(pLeftCol);
+						iter->second = false;
+					}
+					else 
+					{
+						//이전에 충돌이었음 > 계속 충돌 중
+						pLeftCol->OnCollision(pRightCol);
+						pRightCol->OnCollision(pLeftCol);
+					}
 				}
 				else
 				{
-					//처음 충돌 시작
-					pLeftCol->OnCollisionEnter(pRightCol);
-					pRightCol->OnCollisionEnter(pLeftCol);
-					iter->second = true;
+					//현재 충돌하고 있지 않다.
+					if (!vecLeft[i]->IsDead() && !vecRight[j]->IsDead())
+					{
+						//처음 충돌 시작
+						pLeftCol->OnCollisionEnter(pRightCol);
+						pRightCol->OnCollisionEnter(pLeftCol);
+						iter->second = true;
+					}
 				}
 			}
 			else
