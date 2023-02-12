@@ -7,15 +7,11 @@ class CPlayer
 	:public CObject
 {
 private:
-	CTexture* m_pTex;
+	//CTexture* m_pTex;
 
 public:
 	CPlayer();
 	~CPlayer();
-	CPlayer(const CPlayer& _origin) 
-		:CObject(_origin)
-		, m_pTex(_origin.m_pTex)
-	{}
 
 public:	
 	virtual void update();

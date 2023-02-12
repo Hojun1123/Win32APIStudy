@@ -1,5 +1,5 @@
 #pragma once
-
+#include "CCamera.h"
 class CCollider;
 class CAnimator;
 
@@ -34,7 +34,9 @@ public:
 	virtual void render(HDC _dc);
 
 	CCollider* GetCollider() { return m_pCollider; }
+	CAnimator* GetAnimator() { return m_pAnimator; }
 	void CreateCollider();
+	void CreateAnimator();
 	void component_render(HDC _dc);
 
 	virtual void OnCollision(CCollider* _pOther) {};

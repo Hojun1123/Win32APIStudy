@@ -78,6 +78,15 @@
     <Filter Include="Engine\03. Manager\CEventMgr">
       <UniqueIdentifier>{97e249fc-a820-4b56-8fb0-0b8d61de6d74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\07. Component\Animator">
+      <UniqueIdentifier>{0c5daa10-bb71-4806-b64d-6890e97f0a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component\Animator\Animation">
+      <UniqueIdentifier>{b418e2cf-d2fb-47b8-bea0-31ade6e093d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\Camera">
+      <UniqueIdentifier>{633dcee9-e0c9-4e14-ab85-40d8f1807701}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -162,6 +171,15 @@
     <ClInclude Include="func.h">
       <Filter>Engine\01. Header</Filter>
     </ClInclude>
+    <ClInclude Include="CAnimator.h">
+      <Filter>Engine\07. Component\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>Engine\07. Component\Animator\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>Engine\03. Manager\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -228,6 +246,15 @@
       <Filter>Engine\01. Header</Filter>
     </ClCompile>
     <ClCompile Include="Win32APIStudy.cpp" />
+    <ClCompile Include="CAnimator.cpp">
+      <Filter>Engine\07. Component\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>Engine\07. Component\Animator\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Engine\03. Manager\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Win32APIStudy.rc">

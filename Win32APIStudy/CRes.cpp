@@ -3,8 +3,9 @@
 
 CRes::CRes()
 {
-}
 
+}
 CRes::~CRes()
 {
+
 }

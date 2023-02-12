@@ -4,6 +4,7 @@
 #include "CMonster.h"
 #include "CCore.h"
 #include "CTexture.h"
+#include "CCamera.h"
 
 #include "CPathMgr.h"
 #include "CCollisionMgr.h"
@@ -36,9 +37,9 @@ void CScene_Start::Enter()
 	pObj->SetScale(Vec2(100.f, 100.f));
 	AddObject(pObj, GROUP_TYPE::PLAYER);
 
-	CObject* pOtherPlayer = pObj->Clone();
-	pObj->SetPos(Vec2(700.f, 384.f));
-	AddObject(pOtherPlayer, GROUP_TYPE::PLAYER);
+	//CObject* pOtherPlayer = pObj->Clone();
+	//pObj->SetPos(Vec2(660.f, 384.f));
+	//AddObject(pOtherPlayer, GROUP_TYPE::PLAYER);
 
 	int iMonsterCount = 10;
 	float fMoveDist = 25.f;
@@ -64,6 +65,9 @@ void CScene_Start::Enter()
 	//이번 씬에서의 충돌지정 : 플레이어그룹과 몬스터 그룹간의 충돌체크.
 	CCollisionMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MOSTER);
 	CCollisionMgr::GetInst()->CheckGroup(GROUP_TYPE::MOSTER, GROUP_TYPE::PROJ_PLAYER);
+
+	// Camera Look 
+	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
 }
 
 void CScene_Start::Exit()
