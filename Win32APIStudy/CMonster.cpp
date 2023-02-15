@@ -8,7 +8,7 @@
 void CMonster::update()
 {
 	Vec2 vCurPos = GetPos();
-	vCurPos.x += fDT * m_fSpeed * m_iDir;
+	vCurPos.x += (float)fDT * m_fSpeed * m_iDir;
 
 	float fDist = abs(m_vCenterPos.x - vCurPos.x) - m_fMaxDistance;
 	if (0.f < fDist)

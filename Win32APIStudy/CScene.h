@@ -9,6 +9,9 @@ private:
 	vector<CObject*> m_arrObj[(UINT)GROUP_TYPE::END];	//오브젝트 벡터
 	wstring m_strName;	//씬 이름
 
+	UINT m_iTileX;	//가로
+	UINT m_iTileY;	//세로
+
 public:
 	void SetName(const wstring& _strName) { m_strName = _strName; }
 	const wstring& GetName(){ return m_strName; }
@@ -26,6 +29,9 @@ public:
 	void DeleteGroup(GROUP_TYPE _eTarget);
 	void DeleteAll();
 
+	void CreateTile(UINT _iXCount, UINT _iYCount);
+	UINT GetTileX() { return m_iTileX; }
+	UINT GetTileY() { return m_iTileY; }
 public:
 	CScene();
 	virtual ~CScene();

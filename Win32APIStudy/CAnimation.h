@@ -28,7 +28,7 @@ public:
 	void update();
 	void render(HDC _dc);
 
-	int GetMaxFrame() { return m_vecFrm.size(); }
+	size_t GetMaxFrame() { return m_vecFrm.size(); }
 	tAnimFrm& GetFrame(int _iIdx) { return m_vecFrm[_iIdx]; }
 	void SetFrame(int _iFrameIdx) {
 		m_bFinish = false;

@@ -1,9 +1,12 @@
 #include "pch.h"
 #include "CScene.h"
 #include "CObject.h"
-
+#include "CTile.h"
+#include "CResMgr.h"
 
 CScene::CScene()
+	:m_iTileX(0)
+	,m_iTileY(0)
 {
 
 
@@ -76,6 +79,27 @@ void CScene::DeleteAll()
 	for (UINT i = 0; i < (UINT)GROUP_TYPE::END; ++i)
 	{
 		DeleteGroup((GROUP_TYPE)i);
+	}
+}
+
+void CScene::CreateTile(UINT _iXCount, UINT _iYCount)
+{
+	m_iTileX = _iXCount;
+	m_iTileY = _iYCount;
+
+
+	CTexture* pTileTex = CResMgr::GetInst()->LoadTexture(L"Tile", L"content\\texture\\Tile_01.bmp");
+	//타일 생성
+	for (UINT i=0; i< _iYCount; ++i)
+	{
+		for (UINT j = 0; j < _iXCount; j++)
+		{
+			CTile* pTile = new CTile();
+			pTile->SetPos(Vec2((float)(j * TILE_SIZE), (float)(i * TILE_SIZE)));
+			pTile->SetTexture(pTileTex);
+
+			AddObject(pTile, GROUP_TYPE::TILE);
+		}
 	}
 }
 

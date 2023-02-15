@@ -47,6 +47,8 @@ enum class KEY
 	SPACE,
 	ENTER,
 	ESC,
+	LBTN,
+	RBTN,
 	LAST,	//LAST는 enum의 끝을 나타냄
 };
 
@@ -62,7 +64,7 @@ class CKeyMgr
 
 private:
 	vector<tKeyInfo> m_vecKey;	//인덱스 값이 곧 해당 키를 의미
-
+	Vec2			m_vCurMousePos;
 
 public:
 	void init();
@@ -71,6 +73,6 @@ public:
 
 public:
 	KEY_STATE GetKeyState(KEY _eKey) { return m_vecKey[(int)_eKey].eState; }
-
+	Vec2 GetMousePos() { return m_vCurMousePos; }
 };
 

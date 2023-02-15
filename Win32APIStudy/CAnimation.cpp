@@ -4,6 +4,7 @@
 #include "CTexture.h"
 #include "CObject.h"
 #include "CTimeMgr.h"
+#include "CCamera.h"
 
 CAnimation::CAnimation()
 	:m_pAnimator(nullptr)
@@ -24,7 +25,7 @@ void CAnimation::update()
 	if (m_bFinish)
 		return;
 
-	m_fAccTime += fDT;	//시간누적
+	m_fAccTime += (float)fDT;	//시간누적
 
 	if (m_vecFrm[m_iCurFrm].fDuration < m_fAccTime)	//Duration만큼 쌓이면 프레임교체
 	{
@@ -32,7 +33,7 @@ void CAnimation::update()
 		++m_iCurFrm;
 		if (m_vecFrm.size() <= m_iCurFrm)	//애니메이션 한바퀴를 다 돌면
 		{
-			m_iCurFrm = -1;
+			m_iCurFrm = -1;			
 			m_bFinish = true;
 		}
 	}
@@ -45,13 +46,19 @@ void CAnimation::render(HDC _dc)
 
 	CObject* pObj = m_pAnimator->GetObj();
 	Vec2 vPos = pObj->GetPos();
-	tAnimFrm frame = m_vecFrm[m_iCurFrm];
+	vPos += m_vecFrm[m_iCurFrm].vOffset;
+	//랜더링 좌표로 변환
+	vPos = CCamera::GetInst()->GetRenderPos(vPos);
 	TransparentBlt(_dc
-		, (int) (frame.vOffset.x + vPos.x - frame.vSlice.x / 2.f), (int) (frame.vOffset.y + vPos.y - frame.vSlice.y / 2.f)
-		, (int) frame.vSlice.x, (int) frame.vSlice.y
+		, (int) (vPos.x - m_vecFrm[m_iCurFrm].vSlice.x / 2.f)
+		, (int) (vPos.y - m_vecFrm[m_iCurFrm].vSlice.y / 2.f)
+		, (int) m_vecFrm[m_iCurFrm].vSlice.x
+		, (int) m_vecFrm[m_iCurFrm].vSlice.y
 		, m_pTex->GetDC()
-		, (int) frame.vLT.x, (int) frame.vLT.y
-		, (int) frame.vSlice.x, (int) frame.vSlice.y
+		, (int) m_vecFrm[m_iCurFrm].vLT.x
+		, (int) m_vecFrm[m_iCurFrm].vLT.y
+		, (int) m_vecFrm[m_iCurFrm].vSlice.x
+		, (int) m_vecFrm[m_iCurFrm].vSlice.y
 		, RGB(255, 255, 255)
 	);
 }
@@ -64,7 +71,7 @@ void CAnimation::Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vSte
 	{
 		frm.fDuration = _fDuration;
 		frm.vSlice = _vSliceSize;
-		frm.vLT = _vLT + (_vStep * i);
+		frm.vLT = _vLT + (_vStep * (float)i);
 		m_vecFrm.push_back(frm);
 	}
 }

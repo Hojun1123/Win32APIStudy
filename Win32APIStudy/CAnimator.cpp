@@ -2,6 +2,7 @@
 #include "CAnimator.h"
 #include "CAnimation.h"
 
+
 CAnimator::CAnimator()
 	: m_pOwner(nullptr)
 	, m_pCurAnim(nullptr)

@@ -178,6 +178,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 /* 코드 작성~~~~~~~~~~~~~~~~~~~~~~~~~~~ ! */
 
+INT_PTR __stdcall TileCountProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -190,6 +192,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+                break;
+            case ID_MENU_TILE:
+            {
+                INT_PTR iRet = DialogBox(hInst, MAKEINTRESOURCE(IDD_TILE_COUNT), hWnd, TileCountProc);
+                if(iRet == IDOK)
+                {
+
+                }
+            }
                 break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);

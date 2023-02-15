@@ -24,7 +24,7 @@ CPlayer::CPlayer()
 
 	CTexture* pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"content\\texture\\helena.bmp");
 	CreateAnimator();
-	GetAnimator()->CreateAnimation(L"WALK_LEFT", pTex, Vec2(0.f, 0.f), Vec2(80.f, 60.f), Vec2(80.f, 0.f), 0.15, 4);
+	GetAnimator()->CreateAnimation(L"WALK_LEFT", pTex, Vec2(0.f, 0.f), Vec2(80.f, 60.f), Vec2(80.f, 0.f), 0.15f, 4);
 	GetAnimator()->Play(L"WALK_LEFT", true);
 	
 	CAnimation* pAnim = GetAnimator()->FindAnimation(L"WALK_LEFT");
@@ -43,13 +43,13 @@ void CPlayer::update()
 	Vec2 vPos = GetPos();
 
 	if (KEY_HOLD(KEY::W))
-		vPos.y -= 200.f * fDT;
+		vPos.y -= 200.f * (float)fDT;
 	if (KEY_HOLD(KEY::S))
-		vPos.y += 200.f * fDT;
+		vPos.y += 200.f * (float)fDT;
 	if (KEY_HOLD(KEY::A))
-		vPos.x -= 200.f * fDT;
+		vPos.x -= 200.f * (float)fDT;
 	if (KEY_HOLD(KEY::D))
-		vPos.x += 200.f * fDT;
+		vPos.x += 200.f * (float)fDT;
 
 	if (KEY_TAP(KEY::SPACE))
 	{

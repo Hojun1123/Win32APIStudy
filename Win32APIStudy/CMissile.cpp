@@ -22,8 +22,8 @@ void CMissile::update()
 	//vPos.x += 600.f * cosf(m_fTheta) * fDT;
 	//vPos.y -= 600.f * sinf(m_fTheta) * fDT;
 
-	vPos.x += 400.f * m_vDir.x * fDT;
-	vPos.y += 400.f * m_vDir.y * fDT;
+	vPos.x += 400.f * m_vDir.x * (float)fDT;
+	vPos.y += 400.f * m_vDir.y * (float)fDT;
 
 	SetPos(vPos);
 }

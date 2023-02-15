@@ -16,10 +16,11 @@ enum class GROUP_TYPE
 {
 
 	DEFUALT,		//0
-	PLAYER,			//1
-	MOSTER,			//2
-	PROJ_PLAYER,	//3
-	PROJ_MOSTER,	//4
+	TILE,			//1
+	PLAYER,			
+	MOSTER,			
+	PROJ_PLAYER,	
+	PROJ_MOSTER,	
 
 	END = 32,
 };
@@ -66,7 +67,10 @@ enum class EVENT_TYPE
 #define KEY_TAP(key) KEY_CHECK(key, KEY_STATE::TAP)
 #define KEY_AWAY(key) KEY_CHECK(key, KEY_STATE::AWAY)
 #define KEY_NONE(key) KEY_CHECK(key, KEY_STATE::NONE)
+#define MOUSE_POS CKeyMgr::GetInst()->GetMousePos()
 
 #define CLONE(type) type* Clone(){return new type(*this);}
 
 #define PI 3.1415926535f
+
+#define TILE_SIZE 64	//¹Ýºí·°	//64
