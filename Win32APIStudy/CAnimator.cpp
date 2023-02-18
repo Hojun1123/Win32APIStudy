@@ -18,6 +18,11 @@ CAnimator::~CAnimator()
 
 void CAnimator::update()
 {
+
+}
+
+void CAnimator::finalupdate()
+{
 	if (nullptr != m_pCurAnim)
 	{
 		m_pCurAnim->update();
@@ -28,6 +33,7 @@ void CAnimator::update()
 	}
 
 }
+
 void CAnimator::render(HDC _dc)
 {
 	if (nullptr != m_pCurAnim)

@@ -7,6 +7,7 @@
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
 #include "CPathMgr.h"
+#include "CUIMgr.h"
 #include "CCollisionMgr.h"
 #include "CEventMgr.h"
 
@@ -95,6 +96,9 @@ void CCore::progress()
 	CSceneMgr::GetInst()->update();
 	//충돌체크
 	CCollisionMgr::GetInst()->update();
+	//UI이벤트 체크
+	CUIMgr::GetInst()->update();
+
 
 	//랜더링~ ~~~~~~~~~~~//////////////////////////////
 	//화면 clear

@@ -8,6 +8,7 @@
 #include "resource.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
+#include "CUI.h"
 
 CScene_Tool::CScene_Tool()
 {
@@ -19,8 +20,28 @@ CScene_Tool::~CScene_Tool()
 
 void CScene_Tool::Enter()
 {
+	//鸥老 积己
 	CreateTile(5, 5);
+
+	//UI积己
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
+	CUI* pUI = new CUI(false);
+	pUI->SetName(L"ParentUI");
+	pUI->SetScale(Vec2(500.f, 400.f));
+	pUI->SetPos(Vec2(vResolution.x - pUI->GetScale().x, 0.f));
+
+	
+	CUI* pChildUI = new CUI(false);
+	pChildUI->SetName(L"ChildUI");
+	pChildUI->SetScale(Vec2(100.f, 40.f));
+	pChildUI->SetPos(Vec2(0.f, 0.f));
+
+	pUI->AddChild(pChildUI);
+	//AddObject(pChildUI, GROUP_TYPE::UI);
+	AddObject(pUI, GROUP_TYPE::UI);
+
+
+	//墨皋扼
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
 }
 
@@ -45,10 +66,15 @@ void CScene_Tool::SetTileIdx()
 		UINT iTileX = GetTileX();
 		UINT iTileY = GetTileY();
 
-		UINT iCol = (UINT)vMousePos.x / TILE_SIZE;
-		UINT iRow = (UINT)vMousePos.y / TILE_SIZE;
+		int iCol = (int)vMousePos.x / TILE_SIZE;
+		int iRow = (int)vMousePos.y / TILE_SIZE;
 
-		UINT iIdx = iRow * iTileX + iCol;
+		if (vMousePos.x < 0.f || (int)iTileX <= iCol || vMousePos.y < 0.f || (int)iTileY <= iRow)
+		{
+			return;
+		}
+
+		int iIdx = int(iRow * iTileX + iCol);
 		const vector<CObject*>& vecTile = GetGroupObject(GROUP_TYPE::TILE);
 		((CTile*)vecTile[iIdx])->AddImgIdx();
 

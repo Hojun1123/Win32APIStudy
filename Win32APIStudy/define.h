@@ -22,6 +22,8 @@ enum class GROUP_TYPE
 	PROJ_PLAYER,	
 	PROJ_MOSTER,	
 
+
+	UI = 31,
 	END = 32,
 };
 

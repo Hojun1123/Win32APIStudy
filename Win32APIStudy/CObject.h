@@ -30,7 +30,7 @@ public:
 
 public:
 	virtual void update() = 0;
-	virtual void finalupdate() final; //final : 자식들이 오버라이딩하지 못하게 제한함
+	virtual void finalupdate(); 
 	virtual void render(HDC _dc);
 
 	CCollider* GetCollider() { return m_pCollider; }
