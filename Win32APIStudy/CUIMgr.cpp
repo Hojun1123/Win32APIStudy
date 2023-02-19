@@ -7,11 +7,11 @@
 #include "CSceneMgr.h"
 
 CUIMgr::CUIMgr()
+	:m_pFocusedUI(nullptr)
 {}
 
 CUIMgr::~CUIMgr()
 {
-
 }
 
 CUI* CUIMgr::GetTargetedUI(CUI* _pParentUI)
@@ -61,39 +61,102 @@ CUI* CUIMgr::GetTargetedUI(CUI* _pParentUI)
 	return pTargetUI;
 }
 
-void CUIMgr::update()
+CUI* CUIMgr::GetFocusedUI()
 {
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
-	const vector<CObject*>& vecUI = pCurScene->GetGroupObject(GROUP_TYPE::UI);
+	vector<CObject*>& vecUI = pCurScene->GetUIGroup();
+
+	bool bLbtnTap = KEY_TAP(KEY::LBTN);
+
+	CUI* pFocusedUI = m_pFocusedUI;
+
+	//클릭이 발생하지 않을 때는 x
+	if (!bLbtnTap)
+		return pFocusedUI;
+
+	//왼쪽 클릭이 발생 했을 때., UI개 맨위에 위치한다는 것은 맨 마지막에 그려졌다는 의미로 벡터의 뒤쪽에 있다는 의미이다. > 나중에 그려졌다 > 우선순위 높음
+	vector<CObject*>::iterator targetiter = vecUI.end();
+	vector<CObject*>::reverse_iterator iter = vecUI.rbegin();
+	for (; iter != vecUI.rend(); ++iter)
+	{
+		if(((CUI*)*iter)->IsMouseOn())
+		{
+			targetiter = --iter.base();
+			break;
+		}
+	}
+
+	if (vecUI.end() == targetiter)
+	{
+		return nullptr;
+	}
+
+	pFocusedUI = (CUI*)*targetiter;
+	vecUI.erase(targetiter);
+	vecUI.push_back(pFocusedUI);
+	return pFocusedUI;
+}
+
+void CUIMgr::update()
+{
+	//1. 포커스 UI 확인
+	m_pFocusedUI = GetFocusedUI();
+
+	if (!m_pFocusedUI)
+		return;
 
 	bool bLbtnTap = KEY_TAP(KEY::LBTN);
 	bool bLbtnAway = KEY_AWAY(KEY::LBTN);
 
-	for (size_t i = 0; i < vecUI.size(); ++i)
+	//현재 포커스 된 실제 타겟팅 된 UI를 가져옴
+	CUI* pTargetUI = GetTargetedUI(m_pFocusedUI);
+
+	if (pTargetUI != nullptr)
 	{
-		CUI* pUI = (CUI*)vecUI[i];
-		pUI = GetTargetedUI(pUI);
-		if (pUI != nullptr)
+		pTargetUI->MouseOn();
+
+		//마우스가 올려져있고 누름
+		if (bLbtnTap)
 		{
-			pUI->MouseOn();
+			pTargetUI->MouseLbtnDown();
+			pTargetUI->m_bLbtnDown = true;
+		}
 
-			//마우스가 올려져있고 누름
-			if (bLbtnTap)
+		//마우스가 올려져있는데, 눌렀다 때는중
+		else if (bLbtnAway)
+		{
+			pTargetUI->MouseLbtnUp();
+			if (pTargetUI->m_bLbtnDown)	//만약 이전에 누른 상태였다면 클릭 이벤트
 			{
-				pUI->MouseLbtnDown();
-				pUI->m_bLbtnDown = true;
+				pTargetUI->MouseLbtnClicked();
 			}
-
-			//마우스가 올려져있는데, 눌렀다 때는중
-			else if (bLbtnAway)
-			{
-				pUI->MouseLbtnUp();
-				if (pUI->m_bLbtnDown)	//만약 이전에 누른 상태였다면 클릭 이벤트
-				{
-					pUI->MouseLbtnClicked();
-				}
-				pUI->m_bLbtnDown = false;
-			}
+			pTargetUI->m_bLbtnDown = false;
 		}
 	}
+}
+
+void CUIMgr::SetFocusedUI(CUI* _pUI)
+{
+	if (m_pFocusedUI == _pUI || nullptr == _pUI)
+	{
+		m_pFocusedUI = _pUI;
+		return;
+	}
+	m_pFocusedUI = _pUI;
+
+	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+	vector<CObject*>& vecUI = pCurScene->GetUIGroup();
+
+
+	vector<CObject*>::iterator iter = vecUI.begin();
+	for (; iter != vecUI.end(); ++iter)
+	{
+		if (m_pFocusedUI == *iter)
+		{
+			break;
+		}
+	}
+
+	vecUI.erase(iter);
+	vecUI.push_back(m_pFocusedUI);
 }

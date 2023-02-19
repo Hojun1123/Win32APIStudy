@@ -9,14 +9,22 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "CUI.h"
+#include "CPanelUI.h"
+#include "CBtnUI.h"
+#include "CUIMgr.h"
+#include "CPathMgr.h"
 
 CScene_Tool::CScene_Tool()
+	:m_pUI(nullptr)
 {
 }
 
 CScene_Tool::~CScene_Tool()
 {
 }
+
+
+void ChangeScene(DWORD_PTR, DWORD_PTR);
 
 void CScene_Tool::Enter()
 {
@@ -25,21 +33,28 @@ void CScene_Tool::Enter()
 
 	//UI생성
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
-	CUI* pUI = new CUI(false);
-	pUI->SetName(L"ParentUI");
-	pUI->SetScale(Vec2(500.f, 400.f));
-	pUI->SetPos(Vec2(vResolution.x - pUI->GetScale().x, 0.f));
+	CUI* pPanelUI = new CPanelUI;
+	pPanelUI->SetName(L"ParentUI");
+	pPanelUI->SetScale(Vec2(240.f, 160.f));
+	pPanelUI->SetPos(Vec2(vResolution.x - pPanelUI->GetScale().x, 0.f));
 
 	
-	CUI* pChildUI = new CUI(false);
-	pChildUI->SetName(L"ChildUI");
-	pChildUI->SetScale(Vec2(100.f, 40.f));
-	pChildUI->SetPos(Vec2(0.f, 0.f));
+	CBtnUI* pBtnUI = new CBtnUI;
+	pBtnUI->SetName(L"ChildUI");
+	pBtnUI->SetScale(Vec2(48.f, 24.f));
+	pBtnUI->SetPos(Vec2(0.f, 0.f));
+	//pBtnUI->SetClickedCallBack(ChangeScene, 0 , 0);
 
-	pUI->AddChild(pChildUI);
-	//AddObject(pChildUI, GROUP_TYPE::UI);
-	AddObject(pUI, GROUP_TYPE::UI);
+	pPanelUI->AddChild(pBtnUI);
+	AddObject(pPanelUI, GROUP_TYPE::UI);
 
+
+	//복사
+	//CUI* pClonePanel = pPanelUI->Clone();
+	//pClonePanel->SetPos(pClonePanel->GetPos() + Vec2(-300.f, 0.f));
+	//((CBtnUI*)pClonePanel->GetChildUI()[0])->SetClickedCallBack(ChangeScene, 0, 0);
+	//AddObject(pClonePanel, GROUP_TYPE::UI);
+	//m_pUI = pClonePanel;
 
 	//카메라
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
@@ -47,6 +62,7 @@ void CScene_Tool::Enter()
 
 void CScene_Tool::Exit()
 {
+	DeleteAll();
 }
 
 
@@ -54,6 +70,16 @@ void CScene_Tool::update()
 {
 	CScene::update();
 	SetTileIdx();
+
+	if (KEY_TAP(KEY::LSHIFT))
+	{
+		//CUIMgr::GetInst()->SetFocusedUI(m_pUI);
+		SaveTile(L"\\bin\\tile\\test.txt");
+	}
+	if (KEY_TAP(KEY::CTRL))
+	{
+		LoadTile(L"\\bin\\tile\\test.txt");
+	}
 }
 
 void CScene_Tool::SetTileIdx()
@@ -80,6 +106,41 @@ void CScene_Tool::SetTileIdx()
 
 	}
 }
+
+void CScene_Tool::SaveTile(const wstring& _strRelativePath)
+{
+	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
+	strFilePath += _strRelativePath;
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+	assert(pFile);
+
+	//데이터 저장
+	UINT xCount = GetTileX();
+	UINT yCount = GetTileY();
+
+	fwrite(&xCount, sizeof(UINT), 1, pFile);
+	fwrite(&yCount, sizeof(UINT), 1, pFile);
+
+	const vector<CObject*>& vecTile = GetGroupObject(GROUP_TYPE::TILE);
+	for (size_t i = 0; i < vecTile.size(); ++i)
+	{
+		((CTile*)vecTile[i])->Save(pFile);
+	}
+
+	fclose(pFile);
+}
+
+
+
+
+void ChangeScene(DWORD_PTR, DWORD_PTR)
+{
+	ChangeScene(SCENE_TYPE::START);
+}
+
+
 
 
 

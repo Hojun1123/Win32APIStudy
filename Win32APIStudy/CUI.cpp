@@ -2,6 +2,7 @@
 #include "CUI.h"
 #include "CCamera.h"
 #include "CKeyMgr.h"
+#include "SelectGDI.h"
 
 // 부모 > 자식 순 업데이트, 랜더
 
@@ -12,6 +13,19 @@ CUI::CUI(bool _bCamAff)
 	,m_bLbtnDown(false)
 {
 
+}
+
+CUI::CUI(const CUI& _origin)
+	:CObject(_origin)
+	,m_pParentUI(nullptr)
+	,m_bCamAffected(_origin.m_bCamAffected)
+	,m_bMouseOn(false)
+	,m_bLbtnDown(false)
+{
+	for (size_t i = 0; i < _origin.m_vecChildUI.size(); ++i)
+	{
+		AddChild(_origin.m_vecChildUI[i]->Clone());
+	}
 }
 
 CUI::~CUI()
@@ -75,12 +89,25 @@ void CUI::render(HDC _dc)
 		vPos = CCamera::GetInst()->GetRenderPos(vPos);
 	}
 
-	Rectangle(_dc
-		,	int(vPos.x)
-		,   int(vPos.y)
-		,	int(vPos.x + vScale.x)
-		,	int(vPos.y + vScale.y)
+	if (m_bLbtnDown){
+		SelectGDI select(_dc, PEN_TYPE::GREEN);
+
+		Rectangle(_dc
+			, int(vPos.x)
+			, int(vPos.y)
+			, int(vPos.x + vScale.x)
+			, int(vPos.y + vScale.y)
+		);	
+	}
+	else
+	{
+		Rectangle(_dc
+			, int(vPos.x)
+			, int(vPos.y)
+			, int(vPos.x + vScale.x)
+			, int(vPos.y + vScale.y)
 		);
+	}
 
 	render_child(_dc);
 }

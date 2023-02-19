@@ -3,6 +3,7 @@
 #include "CObject.h"
 #include "CTile.h"
 #include "CResMgr.h"
+#include "CPathMgr.h"
 
 CScene::CScene()
 	:m_iTileX(0)
@@ -14,7 +15,7 @@ CScene::CScene()
 
 CScene::~CScene()
 {
-	for (int i = 0; i < (int)GROUP_TYPE::END; i++)
+	for (int i = 0; i < (int)GROUP_TYPE::END; ++i)
 	{
 		for (int j = 0; j < m_arrObj[i].size(); ++j)
 		{
@@ -84,6 +85,8 @@ void CScene::DeleteAll()
 
 void CScene::CreateTile(UINT _iXCount, UINT _iYCount)
 {
+	DeleteGroup(GROUP_TYPE::TILE);
+
 	m_iTileX = _iXCount;
 	m_iTileY = _iYCount;
 
@@ -101,5 +104,34 @@ void CScene::CreateTile(UINT _iXCount, UINT _iYCount)
 			AddObject(pTile, GROUP_TYPE::TILE);
 		}
 	}
+}
+
+void CScene::LoadTile(const wstring& _strRelativePath)
+{
+	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
+	strFilePath += _strRelativePath;
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, strFilePath.c_str(), L"rb");
+	assert(pFile);
+
+	UINT yCount = 0;
+	UINT xCount = 0;
+	fread(&xCount, sizeof(UINT), 1, pFile);
+	fread(&yCount, sizeof(UINT), 1, pFile);
+
+	CreateTile(xCount, yCount);
+
+	const vector<CObject*>& vecTile = GetGroupObject(GROUP_TYPE::TILE);
+	for (size_t i = 0; i < vecTile.size(); ++i)
+	{
+		((CTile*)vecTile[i])->Load(pFile);
+	}
+
+	fclose(pFile);
+
+
+
+	fclose(pFile);
 }
 

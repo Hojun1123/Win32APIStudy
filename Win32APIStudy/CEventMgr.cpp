@@ -3,6 +3,8 @@
 #include "CObject.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
+#include "CUIMgr.h"
+
 CEventMgr::CEventMgr()
 {
 
@@ -58,6 +60,9 @@ void CEventMgr::Excute(const tEvent& _e)
 	{
 		//lParam : Next Scene Type
 		CSceneMgr::GetInst()->ChangeScene((SCENE_TYPE)_e.lParam);
+
+		//포커스 UI 해제
+		CUIMgr::GetInst()->SetFocusedUI(nullptr);
 	}
 		break;
 

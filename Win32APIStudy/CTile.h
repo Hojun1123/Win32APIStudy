@@ -12,11 +12,15 @@ private:
 private:
 	virtual void update();
 	virtual void render(HDC _dc);
+	
 	CLONE(CTile);
 
 public:
 	void SetTexture(CTexture* _pTex) { m_pTileTex = _pTex; }
 	void AddImgIdx() { ++m_iImgIdx; }
+
+	virtual void Save(FILE* _pFile);
+	virtual void Load(FILE* _PFile);
 
 public:
 	CTile();
